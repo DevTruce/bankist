@@ -4,11 +4,13 @@
 /////////////////////////////////////////////////
 // BANKIST APP
 
-// Data
+/////////////////////////////////////////////////
+//// Data
 const account1 = {
-  owner: 'Jonas Schmedtmann',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  owner: 'Truce Ramcharitar',
+  movements: [200, 450, -400, 3000, -650, -130, 70, 1300], // transactions
   interestRate: 1.2, // %
+  username: 'TruceR',
   pin: 1111,
 };
 
@@ -35,7 +37,8 @@ const account4 = {
 
 const accounts = [account1, account2, account3, account4];
 
-// Elements
+/////////////////////////////////////////////////
+//// Elements
 const labelWelcome = document.querySelector('.welcome');
 const labelDate = document.querySelector('.date');
 const labelBalance = document.querySelector('.balance__value');
@@ -62,15 +65,139 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
+//// DISPLAY MOVEMENTS/TRANSACTIONS
 
+const displayMovements = function (movements) {
+  containerMovements.innerHTML = ''; // clear container
+
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    // build movements html
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+        <div class="movements__value">${mov}</div>
+      </div>`;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html); // fill container
+  });
+};
+
+// display movements
+displayMovements(account1.movements);
+console.log(containerMovements.innerHTML);
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+//// LECTURES
+
+/*
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// for loop method
+for (const movement of movements) {
+  if (movement > 0) {
+    console.log(`You deposited ${movement}`);
+  } else {
+    console.log(`You withdrew ${Math.abs(movement)}`);
+  }
+}
+
+for (const [index, movement] of movements.entries()) {
+  if (movement > 0) {
+    console.log(`Movement ${index + 1}: You deposited ${movement}`);
+  } else {
+    console.log(`Movement ${index + 1}: You withdrew ${Math.abs(movement)}`);
+  }
+}
+
+console.log(`----------------------------------`);
+
+// forEach method
+movements.forEach(function (movement, index, array) {
+  if (movement > 0) {
+    console.log(`Movement ${index + 1}: You deposited ${movement}`);
+  } else {
+    console.log(`Movement ${index + 1}: You withdrew ${Math.abs(movement)}`);
+  }
+});
+
+
+/////////////////////////////////////////////////
+//// SLICE METHOD
+let arr = ['a', 'b', 'c', 'd', 'e'];
+
+console.log(arr);
+console.log(arr.slice(2));
+console.log(arr.slice(2, 4));
+console.log(arr.slice(-1));
+console.log(arr.slice(-2));
+console.log(arr.slice(-3));
+console.log(arr.slice(1, -2));
+console.log(arr);
+console.log(arr.slice()); // shalllow copy of array
+
+console.log(`----------------------------------`);
+/////////////////////////////////////////////////
+//// SPLICE METHOD
+console.log(arr);
+console.log(arr.splice(2));
+console.log(arr);
+console.log(arr.splice(-1));
+console.log(arr);
+
+console.log(`----------------------------------`);
+/////////////////////////////////////////////////
+//// REVERSE METHOD
+arr = ['a', 'b', 'c', 'd', 'e'];
+const arr2 = ['j', 'i', 'h', 'g', 'f'];
+
+console.log(arr2.reverse());
+console.log(arr2);
+
+console.log(`----------------------------------`);
+/////////////////////////////////////////////////
+//// CONCAT METHOD
+const letters = arr.concat(arr2);
+
+console.log(letters); // concat
+console.log([...arr, ...arr2]); // spread operator
+
+console.log(`----------------------------------`);
+/////////////////////////////////////////////////
+//// JOIN METHOD
+console.log(letters.join(' - '));
+
+/////////////////////////////////////////////////
+//// AT METHOD
+const arr3 = [23, 11, 64];
+console.log(arr3[0]); // traditional way of displaying specific value
+console.log(arr3.at(0)); // at method way of displaying specific value
+
+// getting last array element
+console.log(arr3[arr3.length - 1]);
+console.log(arr3.slice(-1)[0]);
+console.log(arr3.at(-1));
+
+
+// Map
 const currencies = new Map([
   ['USD', 'United States dollar'],
   ['EUR', 'Euro'],
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+currencies.forEach(function (value, key, map) {
+  console.log(`${key}: ${value}`);
+});
 
-/////////////////////////////////////////////////
+// Set
+const currencies2 = new Set(['USD', 'EUR', 'GBP']);
+
+currencies2.forEach(function (value, _, map) {
+  console.log(`${_}: ${value}`);
+});
+*/
