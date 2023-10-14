@@ -65,6 +65,21 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
+//// COMPUTING USERNAMES
+const createUsernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0].toUpperCase())
+      .join('');
+  });
+};
+
+createUsernames(accounts);
+console.log(accounts);
+
+/////////////////////////////////////////////////
 //// DISPLAY MOVEMENTS/TRANSACTIONS
 const displayMovements = function (movements) {
   containerMovements.innerHTML = ''; // clear container
@@ -90,19 +105,14 @@ displayMovements(account1.movements);
 // console.log(containerMovements.innerHTML);
 
 /////////////////////////////////////////////////
-//// COMPUTING USERNAMES
-const createUsernames = function (accs) {
-  accs.forEach(function (acc) {
-    acc.username = acc.owner
-      .toLowerCase()
-      .split(' ')
-      .map(name => name[0].toUpperCase())
-      .join('');
-  });
+//// CALCULATE AND DISPLAY TOTAL BALANCE
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((accu, cur) => accu + cur, 0);
+  labelBalance.textContent = `$${balance}`;
+  console.log(balance); // debug
 };
 
-createUsernames(accounts);
-console.log(accounts);
+calcDisplayBalance(account1.movements);
 
 /*
 /////////////////////////////////////////////////
@@ -257,4 +267,66 @@ const movementsDescriptions = movements.map(
 );
 
 console.log(movementsDescriptions);
+*/
+
+/*
+/////////////////////////////////////////////////
+//// FILTER METHOD
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const desposits = movements.filter(function (mov, i, arr) {
+  return mov > 0; // return boolean value
+});
+console.log(movements);
+console.log(desposits);
+
+// for of version
+const despositsFor = [];
+for (const mov of movements) {
+  if (mov > 0) {
+    despositsFor.push(mov);
+  }
+}
+
+console.log(movements);
+console.log(despositsFor);
+
+/////////////////////////////////////////////////
+//// WITHDRAWAL CHAL
+
+// for of
+const withdrawalsFor = [];
+
+for (const mov of movements) {
+  if (mov < 0) {
+    withdrawalsFor.push(mov);
+  }
+}
+
+// filter method w/arrow function
+const withdrawals = movements.filter(mov => mov < 0);
+
+console.log(withdrawalsFor);
+console.log(withdrawals);
+*/
+
+/*
+/////////////////////////////////////////////////
+//// REDUCE METHOD
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+console.log(movements);
+
+// accumulator -> snowball
+// const balance = movements.reduce(function (accu, cur, index, array) {
+//   console.log(`Iteration ${index}: ${accu}`);
+//   return accu + cur;
+// }, 0);
+// console.log(balance);
+
+const balance = movements.reduce((accu, cur, index, array) => accu + cur, 0);
+console.log(balance);
+
+// for loop version
+let balance2 = 0;
+for (const mov of movements) balance2 += mov;
+console.log(`for ${balance2}`);
 */
