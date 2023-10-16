@@ -93,7 +93,7 @@ const displayMovements = function (movements) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}</div>
+        <div class="movements__value">$${Math.abs(mov)}</div>
       </div>`;
 
     containerMovements.insertAdjacentHTML('afterbegin', html); // fill container
@@ -113,3 +113,29 @@ const calcDisplayBalance = function (movements) {
 };
 
 calcDisplayBalance(account1.movements);
+
+/////////////////////////////////////////////////
+//// CALCULATE IN/OUT/INTEREST
+
+const calcDisplaySummary = function (movements) {
+  // income
+  const income = movements
+    .filter(mov => mov > 0)
+    .reduce((accu, cur) => accu + cur, 0);
+  labelSumIn.textContent = `$${income}`;
+
+  // outgoing
+  const outgoing = movements
+    .filter(mov => mov < 0)
+    .reduce((accu, cur) => accu + cur, 0);
+  labelSumOut.textContent = `$${Math.abs(outgoing)}`;
+
+  // interest
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .reduce((accu, int) => accu + int, 0);
+  labelSumInterest.textContent = `$${Math.abs(interest)}`;
+};
+
+calcDisplaySummary(account1.movements);
