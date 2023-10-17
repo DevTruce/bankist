@@ -103,9 +103,9 @@ const displayMovements = function (movements) {
 
 /////////////////////////////////////////////////
 //// CALCULATE AND DISPLAY TOTAL BALANCE
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((accu, cur) => accu + cur, 0);
-  labelBalance.textContent = `$${balance}`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((accu, cur) => accu + cur, 0);
+  labelBalance.textContent = `$${acc.balance}`;
 };
 
 // calcDisplayBalance(account1.movements);
@@ -140,6 +140,29 @@ const calcDisplaySummary = function (acc) {
 // calcDisplaySummary(account1.movements);
 
 /////////////////////////////////////////////////
+//// UPDATE UI
+const updateUI = function (acc) {
+  // display movements
+  displayMovements(acc.movements);
+
+  // display balance
+  calcDisplayBalance(acc);
+
+  // display summary
+  calcDisplaySummary(acc);
+
+  // clear input fields and remove focus for transfer inputs
+  inputTransferAmount.value = inputTransferTo.value = '';
+  inputTransferAmount.blur();
+  inputTransferTo.blur();
+
+  // clear input fields and remove focus for login inputs
+  inputLoginUsername.value = inputLoginPin.value = '';
+  inputLoginPin.blur();
+  inputLoginUsername.blur();
+};
+
+/////////////////////////////////////////////////
 //// LOGIN LOGIC
 let currentAccount;
 
@@ -159,18 +182,35 @@ btnLogin.addEventListener('click', function (event) {
       currentAccount.owner.split(' ')[0]
     }!`;
 
-    // clear input fields and remove focus
-    inputLoginUsername.value = inputLoginPin.value = '';
-    inputLoginPin.blur();
-    inputLoginUsername.blur();
+    // update ui
+    updateUI(currentAccount);
+  }
+});
 
-    // display movements
-    displayMovements(currentAccount.movements);
+/////////////////////////////////////////////////
+//// TRANSFER FUNDS
+btnTransfer.addEventListener('click', function (event) {
+  event.preventDefault(); // diable form submit
 
-    // display balance
-    calcDisplayBalance(currentAccount.movements);
+  const amount = Number(inputTransferAmount.value); // transfer amount
 
-    // display summary
-    calcDisplaySummary(currentAccount);
+  // check if username input is valid
+  const recieverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  // check if transfer is valid
+  if (
+    amount > 0 &&
+    recieverAcc &&
+    currentAccount.balance >= amount &&
+    recieverAcc.username !== currentAccount.username
+  ) {
+    // add positive and negative movements to correct accounts
+    currentAccount.movements.push(-amount);
+    recieverAcc.movements.push(amount);
+
+    // update ui
+    updateUI(currentAccount);
   }
 });
