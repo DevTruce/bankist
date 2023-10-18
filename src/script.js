@@ -105,7 +105,7 @@ const displayMovements = function (movements) {
 //// CALCULATE AND DISPLAY TOTAL BALANCE
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((accu, cur) => accu + cur, 0);
-  labelBalance.textContent = `$${acc.balance}`;
+  labelBalance.textContent = `$${Number(acc.balance)}`;
 };
 
 // calcDisplayBalance(account1.movements);
@@ -214,6 +214,21 @@ btnTransfer.addEventListener('click', function (event) {
     // add positive and negative movements to correct accounts
     currentAccount.movements.push(-amount);
     recieverAcc.movements.push(amount);
+
+    // update ui
+    updateUI(currentAccount);
+  }
+});
+
+/////////////////////////////////////////////////
+//// REQUEST LOAN
+btnLoan.addEventListener('click', function (event) {
+  event.preventDefault(); // diable form submit
+
+  const amount = inputLoanAmount.value;
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount / 10)) {
+    currentAccount.movements.push(Number(amount)); //add money to user
 
     // update ui
     updateUI(currentAccount);
