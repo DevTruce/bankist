@@ -165,6 +165,10 @@ const updateUI = function (acc) {
   inputCloseUsername.value = inputClosePin.value = '';
   inputClosePin.blur();
   inputCloseUsername.blur();
+
+  // clear input fields and remove focus for close account inputs
+  btnLoan.value = '';
+  btnLoan.blur();
 };
 
 /////////////////////////////////////////////////
@@ -228,7 +232,7 @@ btnLoan.addEventListener('click', function (event) {
   const amount = inputLoanAmount.value;
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount / 10)) {
-    currentAccount.movements.push(Number(amount)); //add money to user
+    currentAccount.movements.push(Number(amount)); // add loan to user
 
     // update ui
     updateUI(currentAccount);
@@ -264,3 +268,13 @@ btnClose.addEventListener('click', function (event) {
     containerApp.style.opacity = 0;
   }
 });
+
+/////////////////////////////////////////////////
+//// TIMEOUT USER
+
+/////////////////////////////////////////////////
+//// CALCULATE ALL USER MOVEMENTS
+const overallBalance = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((accu, cur) => accu + cur, 0);
+console.log(overallBalance);
