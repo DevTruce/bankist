@@ -160,6 +160,11 @@ const updateUI = function (acc) {
   inputLoginUsername.value = inputLoginPin.value = '';
   inputLoginPin.blur();
   inputLoginUsername.blur();
+
+  // clear input fields and remove focus for close account inputs
+  inputCloseUsername.value = inputClosePin.value = '';
+  inputClosePin.blur();
+  inputCloseUsername.blur();
 };
 
 /////////////////////////////////////////////////
@@ -212,5 +217,35 @@ btnTransfer.addEventListener('click', function (event) {
 
     // update ui
     updateUI(currentAccount);
+  }
+});
+
+/////////////////////////////////////////////////
+//// CLOSE ACCOUNT
+btnClose.addEventListener('click', function (event) {
+  event.preventDefault(); // diable form submit
+
+  // check and store user and pin inputs
+  const confirmUser = inputCloseUsername.value;
+  const confirmPin = Number(inputClosePin.value);
+
+  // check if user and pin inputs are valid
+  if (
+    confirmUser === currentAccount.username &&
+    confirmPin === currentAccount.pin
+  ) {
+    // gather index of account to delete
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+
+    // delete account from array
+    accounts.splice(index, 1);
+
+    // update ui
+    updateUI(currentAccount);
+
+    // hide ui
+    containerApp.style.opacity = 0;
   }
 });
