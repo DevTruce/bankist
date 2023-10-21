@@ -78,10 +78,12 @@ createUsernames(accounts);
 
 /////////////////////////////////////////////////
 //// DISPLAY MOVEMENTS/TRANSACTIONS
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = ''; // clear container
 
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements; // adapted function to sort movements
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     // build movements html
@@ -97,18 +99,12 @@ const displayMovements = function (movements) {
   });
 };
 
-// display movements
-// displayMovements(account1.movements);
-// console.log(containerMovements.innerHTML);
-
 /////////////////////////////////////////////////
 //// CALCULATE AND DISPLAY TOTAL BALANCE
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((accu, cur) => accu + cur, 0);
   labelBalance.textContent = `$${Number(acc.balance)}`;
 };
-
-// calcDisplayBalance(account1.movements);
 
 /////////////////////////////////////////////////
 //// CALCULATE IN/OUT/INTEREST
@@ -271,6 +267,25 @@ btnClose.addEventListener('click', function (event) {
 
 /////////////////////////////////////////////////
 //// TIMEOUT USER
+
+/////////////////////////////////////////////////
+//// SORT MOVEMENTS
+let sorted = false;
+
+btnSort.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  // if (sorted === false) {
+  //   sorted = true;
+  //   displayMovements(currentAccount.movements, true);
+  // } else {
+  //   sorted = false;
+  //   displayMovements(currentAccount.movements, false);
+  // }
+
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
 
 /////////////////////////////////////////////////
 //// CALCULATE ALL USER MOVEMENTS
