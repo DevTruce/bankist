@@ -211,6 +211,16 @@ btnLogin.addEventListener('click', function (event) {
       currentAccount.owner.split(' ')[0]
     }!`;
 
+    // create and display current date and time
+    const now = new Date();
+    const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    const day = `${now.getDate()}`.padStart(2, 0);
+    const year = now.getFullYear();
+    const hour = `${now.getHours()}`.padStart(2, 0);
+    const minute = `${now.getMinutes()}`.padStart(2, 0);
+
+    labelDate.textContent = `${month}/${day}/${year}, ${hour}:${minute}`;
+
     // update ui
     updateUI(currentAccount);
   }
@@ -235,9 +245,13 @@ btnTransfer.addEventListener('click', function (event) {
     currentAccount.balance >= amount &&
     recieverAcc.username !== currentAccount.username
   ) {
-    // add positive and negative movements to correct accounts
+    // transfer action
     currentAccount.movements.push(-amount);
     recieverAcc.movements.push(amount);
+
+    // add transfer dates
+    currentAccount.movementsDates.push(new Date().toISOString());
+    recieverAcc.movementsDates.push(new Date().toISOString());
 
     // update ui
     updateUI(currentAccount);
@@ -252,6 +266,7 @@ btnLoan.addEventListener('click', function (event) {
   const amount = Math.floor(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount / 10)) {
+    currentAccount.movementsDates.push(new Date().toISOString()); // add transfer date
     currentAccount.movements.push(Number(amount)); // add loan to user
 
     // update ui
@@ -288,17 +303,6 @@ btnClose.addEventListener('click', function (event) {
     containerApp.style.opacity = 0;
   }
 });
-
-/////////////////////////////////////////////////
-//// date
-const now = new Date();
-const month = `${now.getMonth() + 1}`.padStart(2, 0);
-const day = `${now.getDate()}`.padStart(2, 0);
-const year = now.getFullYear();
-const hour = now.getHours();
-const minute = now.getMinutes();
-
-labelDate.textContent = `${month}/${day}/${year}, ${hour}:${minute}`;
 
 /////////////////////////////////////////////////
 //// TIMEOUT USER
