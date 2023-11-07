@@ -90,13 +90,20 @@ createUsernames(accounts);
 
 /////////////////////////////////////////////////
 //// DISPLAY MOVEMENTS/TRANSACTIONS
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = ''; // clear container
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements; // adapted function to sort movements
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements; // adapted function to sort movements
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const date = new Date(acc.movementsDates[i]);
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const day = `${date.getDate()}`.padStart(2, 0);
+    const year = date.getFullYear();
+    const displayDate = `${month}/${day}/${year}`;
 
     // build movements html
     const html = `
@@ -104,6 +111,7 @@ const displayMovements = function (movements, sort = false) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
+        <div class="movements__date">${displayDate}</div>
         <div class="movements__value">$${mov.toFixed(2)}</div>
       </div>`;
 
@@ -150,7 +158,7 @@ const calcDisplaySummary = function (acc) {
 //// UPDATE UI
 const updateUI = function (acc) {
   // display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // display balance
   calcDisplayBalance(acc);
@@ -181,6 +189,11 @@ const updateUI = function (acc) {
 /////////////////////////////////////////////////
 //// LOGIN LOGIC
 let currentAccount;
+
+//// FAKE ALWAYS LOGGED IN
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (event) {
   event.preventDefault(); // diable form submit
@@ -275,6 +288,17 @@ btnClose.addEventListener('click', function (event) {
     containerApp.style.opacity = 0;
   }
 });
+
+/////////////////////////////////////////////////
+//// date
+const now = new Date();
+const month = `${now.getMonth() + 1}`.padStart(2, 0);
+const day = `${now.getDate()}`.padStart(2, 0);
+const year = now.getFullYear();
+const hour = now.getHours();
+const minute = now.getMinutes();
+
+labelDate.textContent = `${month}/${day}/${year}, ${hour}:${minute}`;
 
 /////////////////////////////////////////////////
 //// TIMEOUT USER
