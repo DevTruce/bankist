@@ -88,7 +88,8 @@ const createUsernames = function (accs) {
 };
 createUsernames(accounts);
 
-//
+/////////////////////////////////////////////////
+//// CALCULATE DAYS PASSED
 const formatMovementDate = function (date) {
   const calcDaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
