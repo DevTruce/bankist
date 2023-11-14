@@ -90,7 +90,7 @@ createUsernames(accounts);
 
 /////////////////////////////////////////////////
 //// CALCULATE DAYS PASSED
-const formatMovementDate = function (date) {
+const formatMovementDate = function (date, locale) {
   const calcDaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
@@ -100,12 +100,13 @@ const formatMovementDate = function (date) {
   if (daysPassed === 0) return 'Today';
   if (daysPassed === 1) return 'Yesterday';
   if (daysPassed <= 7) return `${daysPassed} days ago`;
-  else {
-    const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    const day = `${date.getDate()}`.padStart(2, 0);
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
-  }
+
+  // const month = `${date.getMonth() + 1}`.padStart(2, 0);
+  // const day = `${date.getDate()}`.padStart(2, 0);
+  // const year = date.getFullYear();
+  // return `${month}/${day}/${year}`;
+
+  return new Intl.DateTimeFormat(locale).format(date);
 };
 
 /////////////////////////////////////////////////
@@ -120,7 +121,7 @@ const displayMovements = function (acc, sort = false) {
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const date = new Date(acc.movementsDates[i]);
-    const displayDate = formatMovementDate(date);
+    const displayDate = formatMovementDate(date, acc.locale);
 
     // build movements html
     const html = `
@@ -229,14 +230,30 @@ btnLogin.addEventListener('click', function (event) {
     }!`;
 
     // create and display current date and time
-    const now = new Date();
-    const month = `${now.getMonth() + 1}`.padStart(2, 0);
-    const day = `${now.getDate()}`.padStart(2, 0);
-    const year = now.getFullYear();
-    const hour = `${now.getHours()}`.padStart(2, 0);
-    const minute = `${now.getMinutes()}`.padStart(2, 0);
 
-    labelDate.textContent = `${month}/${day}/${year}, ${hour}:${minute}`;
+    // OLD METHOD
+    // const now = new Date();
+    // const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    // const day = `${now.getDate()}`.padStart(2, 0);
+    // const year = now.getFullYear();
+    // const hour = `${now.getHours()}`.padStart(2, 0);
+    // const minute = `${now.getMinutes()}`.padStart(2, 0);
+    // labelDate.textContent = `${month}/${day}/${year}, ${hour}:${minute}`;
+
+    // NEW METHOD
+    const now = new Date();
+    const options = {
+      hour: 'numeric',
+      minute: 'numeric',
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+    };
+    // const locale = navigator.language; // get users locale
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(now);
 
     // update ui
     updateUI(currentAccount);
@@ -348,4 +365,3 @@ btnSort.addEventListener('click', function (event) {
 const overallBalance = accounts
   .flatMap(acc => acc.movements)
   .reduce((accu, cur) => accu + cur, 0);
-console.log(overallBalance);
