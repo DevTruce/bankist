@@ -22,8 +22,8 @@ const account1 = {
     '2023-11-05T13:00:00.000Z',
     '2023-11-07T13:00:00.000Z',
   ],
-  currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  currency: 'CAD',
+  locale: 'en-CA',
 };
 
 const account2 = {
@@ -42,8 +42,8 @@ const account2 = {
     '2023-11-05T13:00:00.000Z',
     '2023-11-07T13:00:00.000Z',
   ],
-  currency: 'USD',
-  locale: 'en-US',
+  currency: 'EUR',
+  locale: 'en-GB',
 };
 
 const accounts = [account1, account2];
