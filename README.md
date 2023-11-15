@@ -68,6 +68,17 @@ Here are some features that are available within the Bankist app.
 - live update of interest
 - inactivity timer that will automatically log the user out after 5 minutes of inactivity
 
+<b>IMPORTANT:</b><br>
+if you would like to test out this project please be sure to visit the website and log into one of the following accounts.
+
+<b>Account 1:</b><br>
+user: tr<br>
+pin: 1111
+
+<b>Account 2:</b><br>
+user: mr<br>
+pin: 2222
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
