@@ -95,7 +95,6 @@ const formatMovementDate = function (date, locale) {
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
   const daysPassed = calcDaysPassed(new Date(), date);
-  console.log(`Days passed: ${daysPassed}`);
 
   if (daysPassed === 0) return 'Today';
   if (daysPassed === 1) return 'Yesterday';
@@ -207,15 +206,19 @@ const updateUI = function (acc) {
   // display summary
   calcDisplaySummary(acc);
 
+  // clear input fields and remove focus for login inputs
+  inputLoginUsername.value = inputLoginPin.value = '';
+  inputLoginPin.blur();
+  inputLoginUsername.blur();
+
   // clear input fields and remove focus for transfer inputs
   inputTransferAmount.value = inputTransferTo.value = '';
   inputTransferAmount.blur();
   inputTransferTo.blur();
 
-  // clear input fields and remove focus for login inputs
-  inputLoginUsername.value = inputLoginPin.value = '';
-  inputLoginPin.blur();
-  inputLoginUsername.blur();
+  // clear input fields and remove focus for loan inputs
+  inputLoanAmount.value = '';
+  inputLoanAmount.blur();
 
   // clear input fields and remove focus for close account inputs
   inputCloseUsername.value = inputClosePin.value = '';
@@ -228,13 +231,42 @@ const updateUI = function (acc) {
 };
 
 /////////////////////////////////////////////////
+//// START LOGOUT TIMER
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    // print remaining time to ui
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // when timer hits 0, logout user and stop timer
+    if (time === 0) {
+      clearInterval(timer);
+      containerApp.style.opacity = 0;
+      labelWelcome.textContent = 'Log in to get started';
+    }
+
+    // decrease 1s
+    time--;
+  };
+
+  let time = 10; // default timer
+
+  //// call timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
+/////////////////////////////////////////////////
 //// LOGIN LOGIC
-let currentAccount;
+let currentAccount, timer;
 
 //// FAKE ALWAYS LOGGED IN
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (event) {
   event.preventDefault(); // diable form submit
@@ -278,6 +310,10 @@ btnLogin.addEventListener('click', function (event) {
       options
     ).format(now);
 
+    // Timer
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
+
     // update ui
     updateUI(currentAccount);
   }
@@ -312,6 +348,10 @@ btnTransfer.addEventListener('click', function (event) {
 
     // update ui
     updateUI(currentAccount);
+
+    // reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -320,14 +360,19 @@ btnTransfer.addEventListener('click', function (event) {
 btnLoan.addEventListener('click', function (event) {
   event.preventDefault(); // diable form submit
 
-  const amount = Math.floor(inputLoanAmount.value);
+  const amount = Number(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount / 10)) {
-    currentAccount.movementsDates.push(new Date().toISOString()); // add transfer date
-    currentAccount.movements.push(Number(amount)); // add loan to user
-    console.log(new Date());
-    // update ui
-    updateUI(currentAccount);
+    setTimeout(function () {
+      currentAccount.movementsDates.push(new Date().toISOString()); // add transfer date
+      currentAccount.movements.push(Number(amount)); // add loan to user
+      // update ui
+      updateUI(currentAccount);
+    }, 2500);
+
+    // reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
