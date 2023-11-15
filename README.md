@@ -74,7 +74,6 @@ Here are some features that are available within the Bankist app.
 
 - [![HTML5][html5-icon]][html5-link]
 - [![CSS3][css3-icon]][css3-link]
-- [![SASS][sass-icon]][sass-link]
 - [![JavaScript][JavaScript-icon]][JavaScript-link]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
