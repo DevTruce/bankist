@@ -79,6 +79,8 @@ pin: 1111
 user: mr<br>
 pin: 2222
 
+**Desktop ONLY**
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
