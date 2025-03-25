@@ -29,6 +29,14 @@
 
 ## Screenshots
 
+#### Login details:
+
+user: ua<br>
+pin: 1111
+
+user: ub<Br>
+pin: 2222
+
 [![Bankist Home][product-screenshot2]](product-link)
 [![Bankist Login][product-screenshot1]](product-link)
 

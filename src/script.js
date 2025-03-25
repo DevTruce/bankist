@@ -5,9 +5,15 @@
 // BANKIST APP
 
 /////////////////////////////////////////////////
+//// LOGIN INFO
+
+// user: ua | pin: 1111
+// user: ub | pin: 2222
+
+/////////////////////////////////////////////////
 //// DATA
 const account1 = {
-  owner: 'Truce R',
+  owner: 'User A',
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
@@ -27,7 +33,7 @@ const account1 = {
 };
 
 const account2 = {
-  owner: 'Meagan R',
+  owner: 'User B',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
@@ -251,7 +257,7 @@ const startLogOutTimer = function () {
     time--;
   };
 
-  let time = 10; // default timer
+  let time = 1000000; // default timer
 
   //// call timer every second
   tick();
@@ -273,8 +279,15 @@ btnLogin.addEventListener('click', function (event) {
 
   // check username
   currentAccount = accounts.find(
-    acc => acc.username === inputLoginUsername.value
+    acc => acc.username === inputLoginUsername.value.toLowerCase().trim(' ')
   );
+
+  // alert and return early
+  if (!currentAccount) {
+    return alert('Username not found!');
+  }
+  if (currentAccount.pin !== Number(inputLoginPin.value))
+    return alert('Incorrect Pin!');
 
   // check pin
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
