@@ -38,12 +38,11 @@ Users can log in, view transactions, transfer money, request loans, and close ac
 - Built with modern JavaScript (ES6+), using array methods, timers, and DOM manipulation
 
 #### Login details:
+User A: ua<br>
+Pin: 1111
 
-user: ua<br>
-pin: 1111
-
-user: ub<Br>
-pin: 2222
+User B: ub<Br>
+Pin: 2222
 
 ## Screenshots
 
