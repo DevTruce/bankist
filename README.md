@@ -18,7 +18,7 @@
 <h3 align="center">Bankist</h3>
 
   <p align="center">
-    learning projects
+    fully functional front-end banking application that simulates core banking interactions.
     <br />
     <br />
     <a href="https://devtruce.github.io/bankist/" target="_blank">View Demo</a>
@@ -27,7 +27,15 @@
 
 <!-- ABOUT THE PROJECT -->
 
-## Screenshots
+## Details
+Users can log in, view transactions, transfer money, request loans, and close accounts, all with realistic UI updates.
+
+#### Key Features: 
+- Login authentication and user session handling (mocked)
+- Transaction history with dynamic sorting and formatting
+- Fund transfers, loan requests, and account closure features
+- Auto logout timer for improved UX and security simulation
+- Built with modern JavaScript (ES6+), using array methods, timers, and DOM manipulation
 
 #### Login details:
 
@@ -36,6 +44,10 @@ pin: 1111
 
 user: ub<Br>
 pin: 2222
+
+## Screenshots
+
+
 
 [![Bankist Home][product-screenshot2]](product-link)
 [![Bankist Login][product-screenshot1]](product-link)
